@@ -29,8 +29,4 @@ export class MovieListComponent implements OnInit {
     toggleImage(): void {
         this.showImage = !this.showImage;
     }
-
-    convertToDate(dateString: string): Date {
-        return new Date(dateString);
-    }
 }

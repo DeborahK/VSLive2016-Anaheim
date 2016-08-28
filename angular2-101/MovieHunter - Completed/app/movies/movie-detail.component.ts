@@ -44,8 +44,4 @@ export class MovieDetailComponent implements OnInit, OnDestroy {
     onBack() {
         this._router.navigate(['/movies']);
     }
-
-    convertToDate(dateString: string): Date {
-        return new Date(dateString);
-    }
 }

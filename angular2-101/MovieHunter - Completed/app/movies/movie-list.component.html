@@ -50,7 +50,7 @@
                         </td>
                         <td><a [routerLink]="['/movie', movie.movieId]">{{ movie.title }}</a></td>
                         <td>{{ movie.director }}</td>
-                        <td>{{ convertToDate(movie.releaseDate) | date}}</td>
+                        <td>{{ movie.releaseDate | date}}</td>
                         <td>{{ movie.mpaa | uppercase}}</td>
                         <td>{{ movie.price | currency:'USD':true}}</td>
                         <td>
