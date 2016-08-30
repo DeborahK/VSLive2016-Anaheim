@@ -24,21 +24,29 @@
                     </div>
                 </div>
                 
-                <div class="form-group" [ngClass]="{'has-error': formError.director }">
-                    <label class="col-md-2 control-label" for="inputDirector">Director</label>
+                <div formArrayName="directors">
+                    <div class="row">
+                        <button class="col-md-offset-1 col-md-1 btn btn-default" 
+                                style="width:100px"
+                                (click)="addDirector()">Add Director</button>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error': formError.director}"
+                        *ngFor="let director of directors.controls; let i=index" >
+                        <label class="col-md-2 control-label" for="inputDirector">Director</label>
 
-                    <div class="col-md-8">
-                        <input class="form-control" 
-                                id="inputDirector" 
-                                type="text" 
-                                placeholder="Director (required)" 
-                                formControlName="director" />
-                        <span class="help-block" *ngIf="formError.director">
-                                {{formError.director}}
-                        </span>
+                        <div class="col-md-8">
+                            <input class="form-control" 
+                                    id="inputDirector" 
+                                    type="text" 
+                                    placeholder="Director" 
+                                    [formControlName]="i" />
+                            <span class="help-block" *ngIf="formError.director">
+                                    {{formError.director}}
+                            </span>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group" [ngClass]="{'has-error': formError.starRating}">
                     <label class="col-md-2 control-label" for="inputStarRating">Star Rating (1-5)</label>
 

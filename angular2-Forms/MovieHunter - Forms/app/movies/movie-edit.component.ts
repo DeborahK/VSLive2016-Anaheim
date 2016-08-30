@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm }    from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { IMovie } from './movie';

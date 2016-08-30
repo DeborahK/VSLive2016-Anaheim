@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { IMovie } from './movie';
@@ -17,6 +17,8 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
     movie: IMovie;
     errorMessage: string;
     private _subscriber: any;
+    directors: FormArray;
+    directorData: string[] = [];
 
     constructor(private fb: FormBuilder,
                 private movieService: MovieService,
@@ -26,7 +28,7 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
         // Initialize strings
         this.formError = {
             'title': '',
-            'director': '',
+            'directors': '',
             'starRating': '',
             'description': ''
         };
@@ -36,11 +38,6 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
                 'required': 'Movie title is required',
                 'minlength': 'Movie title must be at least three characters.',
                 'maxlength': 'Movie title cannot exceed 50 characters.'
-            },
-            'director': {
-                'required': 'Director is required',
-                'minlength': 'Director must be at least 5 characters.',
-                'maxlength': 'Director cannot exceed 50 characters.'
             },
             'starRating': {
                 'range': 'Rate the movie between 1 (lowest) and 5 (highest).'
@@ -77,19 +74,30 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
             this.pageTitle = `Edit Movie (Reactive): ${this.movie.title}`;
         }
 
-        this.editForm = this.fb.group({
-            'title': [this.movie.title,
-                    [Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50)]],
-            'director': [this.movie.director,
-                    [Validators.required,
-                    Validators.minLength(5),
-                    Validators.maxLength(50)]],
-            'starRating': [this.movie.starRating,
-                NumberValidators.range(1, 5)],
-            'description': [this.movie.description]
+        // The data currently only has one director
+        this.directorData.push(this.movie.director);
+
+        this.editForm = new FormGroup({
+            title: new FormControl(this.movie.title,
+                                    [Validators.required,
+                                    Validators.minLength(3),
+                                    Validators.maxLength(50)]),
+            directors: this.buildDirectorArray(),
+            starRating: new FormControl(this.movie.starRating,
+                                    NumberValidators.range(1, 5)),
+            description: new FormControl(this.movie.description)
         });
+
+        // this.editForm = this.fb.group({
+        //     title: [this.movie.title,
+        //             [Validators.required,
+        //             Validators.minLength(3),
+        //             Validators.maxLength(50)]],
+        //     directors: this.buildDirectorArray(),
+        //     starRating: [this.movie.starRating,
+        //         NumberValidators.range(1, 5)],
+        //     description: [this.movie.description]
+        // });
 
         this.editForm.valueChanges
             .map(value => {
@@ -103,6 +111,19 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
         // this.editForm.valueChanges
         //         .debounceTime(500)
         //         .subscribe(data => this.onValueChanged(data));
+    }
+
+    addDirector(): void {
+        this.directors.push(this.buildDirector(''));
+    }
+
+    buildDirectorArray(): FormArray {
+        this.directors = this.fb.array([this.buildDirector(this.directorData[0])]);
+        return this.directors;
+    }
+
+    buildDirector(defaultValue: string): FormControl {
+        return new FormControl(defaultValue);
     }
 
     onValueChanged(data: any) {
