@@ -61,8 +61,8 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
     getMovie(id: number) {
         this.movieService.getMovie(id)
             .subscribe(
-            movie => this.onMovieRetrieved(movie),
-            error => this.errorMessage = <any>error);
+            (movie: IMovie) => this.onMovieRetrieved(movie),
+            (error: any) => this.errorMessage = <any>error);
     }
 
     onMovieRetrieved(movie: IMovie) {
@@ -100,13 +100,6 @@ export class MovieEditReactiveComponent implements OnInit, OnDestroy {
         // });
 
         this.editForm.valueChanges
-            .map(value => {
-                // Causes infinite loop
-                // this.titleControl.updateValue(value.title.toUpperCase());
-                value.title = value.title.toUpperCase();
-                console.log(value.title);
-                return value;
-            })
             .subscribe(data => this.onValueChanged(data));
         // this.editForm.valueChanges
         //         .debounceTime(500)

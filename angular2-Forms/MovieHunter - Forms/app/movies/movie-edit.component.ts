@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { MovieService } from './movie.service';
     templateUrl: 'app/movies/movie-edit.component.html'
 })
 export class MovieEditComponent implements OnInit, OnDestroy {
+    @ViewChild(NgForm) movieForm: NgForm;
     pageTitle: string = 'Edit Movie';
     movie: IMovie;
     errorMessage: string;
@@ -36,11 +37,14 @@ export class MovieEditComponent implements OnInit, OnDestroy {
     getMovie(id: number) {
         this._movieService.getMovie(id)
             .subscribe(
-            movie => this.onMovieRetrieved(movie),
-            error => this.errorMessage = <any>error);
+            (movie: IMovie) => this.onMovieRetrieved(movie),
+            (error: any) => this.errorMessage = <any>error);
     }
 
     onMovieRetrieved(movie: IMovie) {
+        if (this.movieForm) {
+            this.movieForm.resetForm();
+        }
         this.movie = movie;
         if (this.movie.movieId === 0) {
             this.pageTitle = 'Add Movie (Template-driven)';
