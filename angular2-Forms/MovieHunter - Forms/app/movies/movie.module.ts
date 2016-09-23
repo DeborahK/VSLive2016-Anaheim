@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
+import { RouterModule} from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
 
-import { movieRoutingModule } from './movie.routing';
 import { MovieListComponent } from './movie-list.component';
 import { MovieDetailComponent } from './movie-detail.component';
 import { MovieEditComponent } from './movie-edit.component';
@@ -15,7 +15,12 @@ import { MovieService } from './movie.service';
   imports: [
     ReactiveFormsModule,
     SharedModule,
-    movieRoutingModule
+    RouterModule.forChild([
+      { path: 'movies', component: MovieListComponent },
+      { path: 'movie/:id', component: MovieDetailComponent },
+      { path: 'movieEdit/:id', component: MovieEditComponent },
+      { path: 'movieEditReactive/:id', component: MovieEditReactiveComponent }
+    ])
   ],
   declarations: [
     MovieListComponent,
