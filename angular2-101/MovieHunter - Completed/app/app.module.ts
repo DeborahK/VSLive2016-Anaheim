@@ -16,7 +16,7 @@ import { MovieModule } from './movies/movie.module';
     RouterModule.forRoot([
       { path: 'welcome', component: WelcomeComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full'},
-      { path: '**', redirectTo: 'welcome', pathMatch: 'full'},
+      { path: '**', redirectTo: 'welcome', pathMatch: 'full'}
     ]),
     MovieModule
   ],
