@@ -14,7 +14,7 @@ export class MovieService {
 
     constructor(private _http: Http) { }
 
-    getMovies(): Observable<IMovie> {
+    getMovies(): Observable<IMovie[]> {
         return this._http.get(this._moviesUrl)
             .map(res => <IMovie[]> res.json())
             //.do(data => console.log(data))
